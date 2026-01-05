@@ -103,17 +103,20 @@ connectBtn.addEventListener("click", connectWallet);
 /* ================= VISITOR COUNTER ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
-  const visitors = document.getElementById("visitors");
-  if (!visitors) return;
+  const visitorsEl = document.getElementById("visitors");
+  if (!visitorsEl) {
+    console.warn("Visitor element not found");
+    return;
+  }
 
   fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
-    .then(r => r.json())
-    .then(d => {
-      visitors.innerText = d.value.toLocaleString();
+    .then(res => res.json())
+    .then(data => {
+      visitorsEl.textContent = data.value.toLocaleString();
     })
     .catch(err => {
-      console.error("Visitor error:", err);
-      visitors.innerText = "—";
+      console.error("Visitor counter error:", err);
+      visitorsEl.textContent = "—";
     });
 
 });
@@ -313,6 +316,7 @@ musicBtn.addEventListener("click", () => {
 
 loadCryptoTicker();
 setInterval(loadCryptoTicker, 30000);
+
 
 
 
