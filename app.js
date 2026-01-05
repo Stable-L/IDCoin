@@ -100,10 +100,23 @@ sendBtn.addEventListener("click", async ()=>{
 connectBtn.addEventListener("click", connectWallet);
 
 
-// Visitor
-fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
-.then(r=>r.json()).then(d=>visitors.innerText=d.value);
+/* ================= VISITOR COUNTER ================= */
+document.addEventListener("DOMContentLoaded", () => {
 
+  const visitors = document.getElementById("visitors");
+  if (!visitors) return;
+
+  fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
+    .then(r => r.json())
+    .then(d => {
+      visitors.innerText = d.value.toLocaleString();
+    })
+    .catch(err => {
+      console.error("Visitor error:", err);
+      visitors.innerText = "—";
+    });
+
+});
 
 year.innerText=new Date().getFullYear();
 
@@ -300,6 +313,7 @@ musicBtn.addEventListener("click", () => {
 
 loadCryptoTicker();
 setInterval(loadCryptoTicker, 30000);
+
 
 
 
