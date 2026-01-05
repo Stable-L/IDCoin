@@ -48,10 +48,12 @@ function closeFiatLeak(){
 }
 
 /* =================================================
-   TICKER TOP 100 CRYPTO — SMOOTH VERSION
-   Source: CoinGecko (no API key)
+   TICKER TOP CRYPTO — IDC & AE COIN PINNED FIRST
+   Source: CoinGecko + Manual Coins
 ================================================= */
 async function loadCryptoTicker(){
+  const ticker = document.getElementById("tickerContent");
+
   try{
     const res = await fetch(
       "https://api.coingecko.com/api/v3/coins/markets" +
@@ -59,11 +61,34 @@ async function loadCryptoTicker(){
       "&per_page=100&page=1&sparkline=false"
     );
 
-    const data = await res.json();
-    const ticker = document.getElementById("tickerContent");
+    if(!res.ok) throw new Error("API error");
 
+    const data = await res.json();
     ticker.innerHTML = "";
 
+    /* ===== IDC (PINNED #1) ===== */
+    const idcItem = document.createElement("div");
+    idcItem.className = "ticker-item";
+    idcItem.innerHTML = `
+      <img src="assets/logo.png" alt="IDC">
+      <span class="ticker-symbol" style="color:#d4af37;">IDC</span>
+      <span class="ticker-price">$1.00</span>
+      <span style="color:#4caf50;">0.00%</span>
+    `;
+    ticker.appendChild(idcItem);
+
+    /* ===== AE COIN (PINNED #2) ===== */
+    const aeItem = document.createElement("div");
+    aeItem.className = "ticker-item";
+    aeItem.innerHTML = `
+      <img src="assets/aecoin.png" alt="AE Coin">
+      <span class="ticker-symbol" style="color:#9fdcff;">AEC</span>
+      <span class="ticker-price">$0.27</span>
+      <span style="color:#4caf50;">0.00%</span>
+    `;
+    ticker.appendChild(aeItem);
+
+    /* ===== TOP CRYPTO FROM COINGECKO ===== */
     data.forEach(c=>{
       const item = document.createElement("div");
       item.className = "ticker-item";
@@ -71,8 +96,8 @@ async function loadCryptoTicker(){
       item.innerHTML = `
         <img src="${c.image}" alt="${c.symbol}">
         <span class="ticker-symbol">${c.symbol.toUpperCase()}</span>
-        $${c.current_price.toLocaleString()}
-        <span style="color:${c.price_change_percentage_24h>=0?'#4caf50':'#ff5252'}">
+        <span class="ticker-price">$${c.current_price.toLocaleString()}</span>
+        <span style="color:${c.price_change_percentage_24h >= 0 ? '#4caf50' : '#ff5252'}">
           ${c.price_change_percentage_24h?.toFixed(2)}%
         </span>
       `;
@@ -80,42 +105,29 @@ async function loadCryptoTicker(){
       ticker.appendChild(item);
     });
 
-    /* DUPLIKASI ISI → LOOP HALUS */
+    /* ===== DUPLIKASI UNTUK LOOP HALUS ===== */
     ticker.innerHTML += ticker.innerHTML;
 
   }catch(err){
     console.error("Ticker error:", err);
-    document.getElementById("tickerContent").innerText =
-      "Market data unavailable";
+
+    /* FALLBACK — IDC & AE COIN TETAP ADA */
+    ticker.innerHTML = `
+      <div class="ticker-item">
+        <img src="assets/logo.png" alt="IDC">
+        <span class="ticker-symbol">IDC</span>
+        <span class="ticker-price">$1.00</span>
+        <span style="color:#4caf50;">0.00%</span>
+      </div>
+      <div class="ticker-item">
+        <img src="assets/aecoin.png" alt="AE Coin">
+        <span class="ticker-symbol">AEC</span>
+        <span class="ticker-price">$0.27</span>
+        <span style="color:#4caf50;">0.00%</span>
+      </div>
+    `;
   }
 }
-
-/* LOAD SEKALI */
-loadCryptoTicker();
-
-/* UPDATE DATA TIAP 5 MENIT (AMAN) */
-setInterval(loadCryptoTicker, 300000);
-
-const sections = document.querySelectorAll("section[id]");
-const navLinks = document.querySelectorAll(".main-nav a[href^='#']");
-
-window.addEventListener("scroll", () => {
-  let current = "";
-
-  sections.forEach(sec => {
-    const top = window.scrollY;
-    if (top >= sec.offsetTop - 120) {
-      current = sec.getAttribute("id");
-    }
-  });
-
-  navLinks.forEach(a => {
-    a.classList.remove("nav-active");
-    if (a.getAttribute("href") === "#" + current) {
-      a.classList.add("nav-active");
-    }
-  });
-});
 
 /* =================================================
    CRYPTO NEWS — STABLE + FALLBACK
@@ -210,5 +222,6 @@ musicBtn.addEventListener("click", () => {
     musicBtn.innerText = "🔇";
   }
 });
+
 
 
