@@ -37,14 +37,6 @@ connectBtn.onclick=connectWallet;
 fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
 .then(r=>r.json()).then(d=>visitors.innerText=d.value);
 
-// Music
-const music=bgMusic,gate=soundGate;
-gate.onclick=()=>{
-music.play();gate.style.display="none";musicBtn.innerText="🔊";
-};
-musicBtn.onclick=()=>{
-music.paused?music.play():music.pause();
-};
 
 year.innerText=new Date().getFullYear();
 
@@ -193,26 +185,30 @@ async function loadCryptoNews(){
 /* LOAD SAAT HALAMAN DIBUKA */
 loadCryptoNews();
 
-// ===== BACKGROUND MUSIC CONTROL =====
-const music = document.getElementById("bgMusic");
-const gate  = document.getElementById("soundGate");
-const btn   = document.getElementById("musicBtn");
+/* ================= BACKGROUND MUSIC ================= */
+const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+const soundGate = document.getElementById("soundGate");
 
-// start music only after click
-gate.onclick = () => {
-  music.play();
-  gate.style.display = "none";
-  btn.innerText = "🔊";
-};
+// volume aman
+bgMusic.volume = 0.3;
 
-// toggle music on/off
-btn.onclick = () => {
-  if (music.paused) {
-    music.play();
-    btn.innerText = "🔊";
+// play after user interaction
+soundGate.addEventListener("click", () => {
+  bgMusic.play();
+  soundGate.style.display = "none";
+  musicBtn.innerText = "🔊";
+});
+
+// toggle on/off
+musicBtn.addEventListener("click", () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicBtn.innerText = "🔊";
   } else {
-    music.pause();
-    btn.innerText = "🔇";
+    bgMusic.pause();
+    musicBtn.innerText = "🔇";
   }
-};
+});
+
 
