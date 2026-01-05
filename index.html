@@ -285,13 +285,18 @@
 </div>
 </footer>
 
-<audio id="bgMusic" loop>
-<source src="cyberpunk.mp3" type="audio/mpeg">
+<!-- ================= BACKGROUND MUSIC ================= -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/audio/as-one.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
 </audio>
 
 <button id="musicBtn">🔇</button>
-<div id="soundGate">▶ Enter with sound</div>
 
-<script src="app.js"></script>
+<div id="soundGate">
+  ▶ Click to enable music
+</div>
+
 </body>
 </html>
+
