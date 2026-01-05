@@ -1,37 +1,104 @@
-let tronWeb,user;
-const IDC="TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ";
-const DEC=6;
+/* ================= WALLET SETUP ================= */
 
-async function waitTron(){
-return new Promise((r,j)=>{
-let t=setInterval(()=>{
-if(window.tronWeb?.ready){clearInterval(t);r(tronWeb)}
-},300);
-});
+let tronWeb = null;
+let user = null;
+
+const IDC = "TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ";
+const DEC = 6;
+
+// bind element (WAJIB)
+const walletAddress = document.getElementById("walletAddress");
+const walletStatus  = document.getElementById("walletStatus");
+const idcBalance    = document.getElementById("idcBalance");
+const connectBtn    = document.getElementById("connectBtn");
+const sendBtn       = document.getElementById("sendBtn");
+const sendTo        = document.getElementById("sendTo");
+const sendAmount    = document.getElementById("sendAmount");
+const txStatus      = document.getElementById("txStatus");
+
+/* ================= WAIT TRONLINK ================= */
+function waitTron(){
+  return new Promise(resolve=>{
+    const t = setInterval(()=>{
+      if(window.tronWeb && window.tronWeb.ready){
+        clearInterval(t);
+        resolve(window.tronWeb);
+      }
+    },300);
+  });
 }
 
+/* ================= CONNECT WALLET ================= */
 async function connectWallet(){
-tronWeb=await waitTron();
-await tronWeb.request({method:"tron_requestAccounts"});
-user=tronWeb.defaultAddress.base58;
-walletAddress.innerText=user;
-walletStatus.innerText="Connected";
-loadBalance();
+  try{
+    tronWeb = await waitTron();
+
+    await tronWeb.request({ method:"tron_requestAccounts" });
+
+    user = tronWeb.defaultAddress.base58;
+
+    walletAddress.innerText = user;
+    walletStatus.innerText  = "Connected";
+
+    await loadBalance();
+
+  }catch(err){
+    console.error("Connect wallet error:", err);
+    walletStatus.innerText = "Connection failed";
+  }
 }
 
+/* ================= LOAD BALANCE ================= */
 async function loadBalance(){
-const c=await tronWeb.contract().at(IDC);
-const b=await c.balanceOf(user).call();
-idcBalance.innerText=(b/10**DEC).toLocaleString();
+  try{
+    const contract = await tronWeb.contract().at(IDC);
+    const balance  = await contract.balanceOf(user).call();
+
+    idcBalance.innerText =
+      (Number(balance) / 10 ** DEC).toLocaleString(undefined,{
+        minimumFractionDigits:2,
+        maximumFractionDigits:6
+      });
+
+  }catch(err){
+    console.error("Load balance error:", err);
+    idcBalance.innerText = "Error";
+  }
 }
 
-sendBtn.onclick=async()=>{
-const c=await tronWeb.contract().at(IDC);
-await c.transfer(sendTo.value,tronWeb.toSun(sendAmount.value,DEC)).send();
-txStatus.innerText="Transaction sent";
-};
+/* ================= SEND TOKEN ================= */
+sendBtn.addEventListener("click", async ()=>{
+  try{
+    if(!tronWeb || !user){
+      alert("Connect wallet first");
+      return;
+    }
 
-connectBtn.onclick=connectWallet;
+    const amount = Number(sendAmount.value);
+    if(amount <= 0){
+      alert("Invalid amount");
+      return;
+    }
+
+    const contract = await tronWeb.contract().at(IDC);
+
+    const tx = await contract.transfer(
+      sendTo.value,
+      BigInt(amount * 10 ** DEC)
+    ).send();
+
+    txStatus.innerText = "Transaction sent";
+    await loadBalance();
+
+  }catch(err){
+    console.error("Send token error:", err);
+    txStatus.innerText = "Transaction failed";
+  }
+});
+
+/* ================= BUTTON ================= */
+connectBtn.addEventListener("click", connectWallet);
+
 
 // Visitor
 fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
@@ -233,6 +300,7 @@ musicBtn.addEventListener("click", () => {
 
 loadCryptoTicker();
 setInterval(loadCryptoTicker, 30000);
+
 
 
 
