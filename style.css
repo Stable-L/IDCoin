@@ -396,5 +396,14 @@ input{
   margin-top:8px;
 }
 
+/* Highlight pinned coins */
+.ticker-item:nth-child(1),
+.ticker-item:nth-child(2){
+  background:rgba(212,175,55,0.12);
+  padding:4px 10px;
+  border-radius:10px;
+  border:1px solid rgba(212,175,55,0.5);
+}
+
 
 
