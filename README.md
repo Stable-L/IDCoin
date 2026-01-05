@@ -1,5 +1,6 @@
 # IDCoin
 Indo Stable Coin • Global Crypto Market • Powered by TRON
+
 About ID Coin
 ID Coin (IDC) is a cryptocurrency asset designed as a stable digital currency with an exchange rate of 1 Rupiah pegged to 1 United States Dollar (USD) on the Tron network.
 
