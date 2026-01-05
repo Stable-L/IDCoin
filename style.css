@@ -405,5 +405,13 @@ input{
   border:1px solid rgba(212,175,55,0.5);
 }
 
+/* IDC highlight */
+.ticker-item:first-child{
+  background:rgba(212,175,55,0.12);
+  padding:4px 8px;
+  border-radius:10px;
+  border:1px solid rgba(212,175,55,0.5);
+}
+
 
 
