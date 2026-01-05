@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ID Coin (IDC) — Indo Stable Coin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ID Coin (IDC) — Indonesia Digital Stable Coin on TRON Blockchain">
+<meta name="keywords" content="ID Coin, IDC, Stable Coin Indonesia, TRC20">
+<meta name="author" content="ID Coin Team">
+
+<meta property="og:title" content="ID Coin (IDC)">
+<meta property="og:description" content="The Future of Indonesia Stable Coin">
+<meta property="og:image" content="assets/cover.png">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/tronweb/dist/TronWeb.min.js"></script>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+
+  <div class="cover-container">
+    <img src="assets/cover.png" class="cover-img">
+
+    <div class="cover-overlay">
+      <img src="assets/logo.png" class="cover-logo">
+
+      <h1>ID Coin (IDC)</h1>
+
+      <!-- NAV PANEL -->
+      <nav class="main-nav">
+        <a href="#about">About</a>
+        <a href="#token">Token Info</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#wallet">Your Wallet</a>
+        <a href="#wallets">Supported Wallets</a>
+        <a href="#buy">How to Buy</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#news">Crypto News</a>
+
+        <!-- FIAT LEAK BUTTON -->
+        <a href="javascript:void(0)" onclick="openFiatLeak()" class="fiat-btn">
+          🌍 Fiat Leak (Live)
+        </a>
+      </nav>
+
+      <!-- TAGLINE -->
+      <p class="tagline">
+        Indo Stable Coin
+        <span class="dot">•</span>
+        Global Crypto Market
+        <span class="dot">•</span>
+        Powered by TRON
+      </p>
+
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div id="tickerContent" class="ticker-content">
+      🌍 Global Crypto Market • Stable • Secure • Transparent • Powered by TRON
+    </div>
+  </div>
+
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+<section class="hero">
+<h2>The Future of Indonesia Stable Coin</h2>
+<p class="lead">Stable • Secure • Transparent • Pegged</p>
+<button id="connectBtn" class="btn btn-primary">Connect Wallet</button>
+<p id="walletStatus" class="muted">Not Connected</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+<h2>About ID Coin</h2>
+<p><strong>ID Coin (IDC)</strong> is a cryptocurrency asset designed as a stable digital currency with an exchange rate of <strong>1 Rupiah pegged to 1 United States Dollar (USD)</strong> on the Tron network.</p>
+<p>IDC is pegged to a 1 USD equivalent exchange mechanism, providing consistent value stability for users, businesses, and the digital financial ecosystem.</p>
+<p>Built on the efficient blockchain network <strong>TRON (TRC20)</strong>, ID Coin combines transaction speed, low fees, and on-chain transparency.</p>
+<ul>
+<li>Everyday digital transactions</li>
+<li>Store of value</li>
+<li>Cross-platform payments</li>
+<li>DeFi and Web3 integration</li>
+</ul>
+<p>With fixed supply and secure contract design, IDC ensures trust and transparency.</p>
+<p class="note-warning"><strong>Note:</strong> ID Coin is a community-driven crypto asset and not affiliated with any government or central bank.</p>
+</section>
+
+<!-- TOKEN INFO -->
+<section id="token" class="section">
+<h2>Token Information</h2>
+<div class="card">
+<p><strong>Name:</strong> Indo Stable Coin (ID Coin)</p>
+<p><strong>Symbol:</strong> IDC</p>
+<p><strong>Network:</strong> TRON (TRC20)</p>
+<p><strong>Decimals:</strong> 6</p>
+<p><strong>Total Supply:</strong> 275,000,000,000 IDC</p>
+<p><strong>Contract:</strong> <code>TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ</code></p>
+</div>
+</section>
+
+<!-- TOKENOMICS -->
+<section id="tokenomics" class="section">
+  <h2>ID Coin Tokenomics</h2>
+
+  <div class="grid tokenomics-grid">
+
+    <div class="card tokenomics-card">
+      <h3>💧 Liquidity Pool — 40%</h3>
+      <p>
+        Allocated to ensure healthy liquidity and stable trading on decentralized exchanges
+        such as <strong>SunSwap</strong>.
+      </p>
+    </div>
+
+    <div class="card tokenomics-card">
+      <h3>🏦 Treasury & Ecosystem — 30%</h3>
+      <p>
+        Used for long-term development, operational costs, security, infrastructure,
+        and strategic partnerships to support ecosystem growth.
+      </p>
+    </div>
+
+    <div class="card tokenomics-card">
+      <h3>🎁 Community & Incentives — 20%</h3>
+      <p>
+        Dedicated to community rewards, incentive programs, airdrops,
+        and initiatives that encourage adoption and participation.
+      </p>
+    </div>
+
+    <div class="card tokenomics-card">
+      <h3>👨‍💻 Team & Development — 10%</h3>
+      <p>
+        Reserved for the core development team with responsible allocation,
+        long-term commitment, and no aggressive vesting structure.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WALLET -->
+<section id="wallet" class="section">
+<h2>Your Wallet</h2>
+<div class="card">
+<p><strong>Address:</strong> <span id="walletAddress">—</span></p>
+<p><strong>IDC Balance:</strong> <span id="idcBalance">—</span></p>
+
+<h3>Send ID Coin</h3>
+<input id="sendTo" placeholder="Recipient Address">
+<input id="sendAmount" placeholder="Amount IDC">
+<button id="sendBtn" class="btn btn-primary">Send Token</button>
+<p id="txStatus" class="muted"></p>
+</div>
+</section>
+
+<!-- HOW TO BUY -->
+<section id="buy" class="section">
+  <h2>How to Swap ID Coin</h2>
+
+  <div class="card">
+    <p>
+      ID Coin (IDC) can be swapped via a decentralized exchange using
+      <strong>SunSwap V3</strong>.
+    </p>
+
+    <!-- TOMBOL SUNSWAP -->
+    <button
+      class="btn btn-primary"
+      onclick="window.open('https://sun.io/?lang=en-US#/swap/v3','_blank','noopener,noreferrer')"
+      style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;">
+      <img src="assets/sunswap.png" alt="SunSwap" style="width:18px;height:18px;">
+      Open SunSwap V3
+    </button>
+
+    <!-- NOTE -->
+    <p class="note-warning" style="margin-top:14px;">
+      <strong>Note:</strong>
+      You will be redirected to the official SunSwap website to complete the swap.
+    </p>
+
+    <!-- POWERED BY -->
+    <p style="margin-top:12px;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px;">
+      Powered by
+      <span style="display:flex;align-items:center;gap:6px;">
+        <img src="assets/sunswap.png" alt="SunSwap" style="width:18px;height:18px;">
+        SunSwap V3
+      </span>
+    </p>
+  </div>
+
+  <!-- STEP BY STEP -->
+  <div style="margin-top:16px;font-size:14px;line-height:1.7;color:var(--text)">
+    <strong>How to swap:</strong>
+    <ol>
+      <li>
+        Connect your wallet
+        (TRONLink, Binance Web3 Wallet, OKX Wallet, TokenPocket).
+      </li>
+      <li>
+        Choose <strong>USDT</strong> or <strong>TRX</strong> to swap.
+      </li>
+      <li>
+        If ID Coin (IDC) is not listed, add it manually using this contract:
+        <code>TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ</code>
+      </li>
+      <li>
+        Enter the amount to swap and confirm the transaction in your wallet.
+      </li>
+      <li>
+        ID Coin (IDC) will appear in your wallet after the swap is completed.
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- SUPPORTED WALLETS -->
+<section id="wallets" class="section">
+<h2>Supported Wallets</h2>
+<div class="grid">
+<div class="card"><img src="assets/binance.png"> Binance Web3</div>
+<div class="card"><img src="assets/tokenpocket.png"> TokenPocket</div>
+<div class="card"><img src="assets/okx.png"> OKX Wallet</div>
+<div class="card"><img src="assets/klever.png"> Klever Wallet</div>
+<div class="card"><img src="assets/tronlink.png"> TronLink</div>
+</div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="section">
+<h2>Roadmap</h2>
+<div class="grid">
+<div class="card">Phase 1 — Launch</div>
+<div class="card">Phase 2 — Liquidity & Growth</div>
+<div class="card">Phase 3 — Web3 Integration</div>
+<div class="card">Phase 4 — Global Adoption</div>
+</div>
+</section>
+
+<!-- NEWS -->
+<section id="news" class="section">
+<h2>Latest Crypto News</h2>
+<div id="newsContainer" class="news-grid">Loading news...</div>
+</section>
+
+</main>
+
+<div id="fiatModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeFiatLeak()">×</span>
+    <iframe
+      src="https://fiatleak.com/usdt"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+<div class="footer-info">
+<a href="#"><img src="assets/twitter.png"> Twitter</a>
+<a href="#"><img src="assets/telegram.png"> Telegram</a>
+<a href="#"><img src="assets/tiktok.png"> TikTok</a>
+<a href="mailto:contact@idcoin.io"><img src="assets/email.png"> Email</a>
+</div>
+
+<div class="footer-stats">
+👥 Total Visitors: <span id="visitors">Loading...</span>
+</div>
+
+<div class="footer-copy">
+© <span id="year"></span> ID Coin
+</div>
+</footer>
+
+<audio id="bgMusic" loop>
+<source src="cyberpunk.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🔇</button>
+<div id="soundGate">▶ Enter with sound</div>
+
+<script src="app.js"></script>
+</body>
+</html>
