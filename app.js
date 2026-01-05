@@ -192,3 +192,27 @@ async function loadCryptoNews(){
 
 /* LOAD SAAT HALAMAN DIBUKA */
 loadCryptoNews();
+
+// ===== BACKGROUND MUSIC CONTROL =====
+const music = document.getElementById("bgMusic");
+const gate  = document.getElementById("soundGate");
+const btn   = document.getElementById("musicBtn");
+
+// start music only after click
+gate.onclick = () => {
+  music.play();
+  gate.style.display = "none";
+  btn.innerText = "🔊";
+};
+
+// toggle music on/off
+btn.onclick = () => {
+  if (music.paused) {
+    music.play();
+    btn.innerText = "🔊";
+  } else {
+    music.pause();
+    btn.innerText = "🔇";
+  }
+};
+
