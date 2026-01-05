@@ -48,8 +48,8 @@ function closeFiatLeak(){
 }
 
 /* =================================================
-   TICKER TOP CRYPTO — IDC & AE COIN PINNED FIRST
-   Source: CoinGecko + Manual Coins
+   TICKER TOP CRYPTO — IDC PINNED FIRST
+   Source: CoinGecko + Manual IDC
 ================================================= */
 async function loadCryptoTicker(){
   const ticker = document.getElementById("tickerContent");
@@ -61,34 +61,23 @@ async function loadCryptoTicker(){
       "&per_page=100&page=1&sparkline=false"
     );
 
-    if(!res.ok) throw new Error("API error");
-
     const data = await res.json();
     ticker.innerHTML = "";
 
-    /* ===== IDC (PINNED #1) ===== */
+    /* ===== IDC MANUAL (PINNED FIRST) ===== */
     const idcItem = document.createElement("div");
     idcItem.className = "ticker-item";
+
     idcItem.innerHTML = `
       <img src="assets/logo.png" alt="IDC">
       <span class="ticker-symbol" style="color:#d4af37;">IDC</span>
       <span class="ticker-price">$1.00</span>
       <span style="color:#4caf50;">0.00%</span>
     `;
+
     ticker.appendChild(idcItem);
 
-    /* ===== AE COIN (PINNED #2) ===== */
-    const aeItem = document.createElement("div");
-    aeItem.className = "ticker-item";
-    aeItem.innerHTML = `
-      <img src="assets/aecoin.png" alt="AE Coin">
-      <span class="ticker-symbol" style="color:#9fdcff;">AEC</span>
-      <span class="ticker-price">$0.27</span>
-      <span style="color:#4caf50;">0.00%</span>
-    `;
-    ticker.appendChild(aeItem);
-
-    /* ===== TOP CRYPTO FROM COINGECKO ===== */
+    /* ===== COINGECKO DATA ===== */
     data.forEach(c=>{
       const item = document.createElement("div");
       item.className = "ticker-item";
@@ -111,7 +100,6 @@ async function loadCryptoTicker(){
   }catch(err){
     console.error("Ticker error:", err);
 
-    /* FALLBACK — IDC & AE COIN TETAP ADA */
     ticker.innerHTML = `
       <div class="ticker-item">
         <img src="assets/logo.png" alt="IDC">
@@ -119,15 +107,10 @@ async function loadCryptoTicker(){
         <span class="ticker-price">$1.00</span>
         <span style="color:#4caf50;">0.00%</span>
       </div>
-      <div class="ticker-item">
-        <img src="assets/aecoin.png" alt="AE Coin">
-        <span class="ticker-symbol">AEC</span>
-        <span class="ticker-price">$0.27</span>
-        <span style="color:#4caf50;">0.00%</span>
-      </div>
     `;
   }
 }
+
 
 /* =================================================
    CRYPTO NEWS — STABLE + FALLBACK
@@ -222,6 +205,7 @@ musicBtn.addEventListener("click", () => {
     musicBtn.innerText = "🔇";
   }
 });
+
 
 
 
