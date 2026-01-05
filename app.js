@@ -100,35 +100,30 @@ sendBtn.addEventListener("click", async ()=>{
 connectBtn.addEventListener("click", connectWallet);
 
 
-/* ================= VISITOR COUNTER ================= */
-document.addEventListener("DOMContentLoaded", () => {
+/* ================= VISITOR COUNTER (SAFE MODE) ================= */
+document.addEventListener("DOMContentLoaded", async () => {
 
   const visitorsEl = document.getElementById("visitors");
-  if (!visitorsEl) {
-    console.warn("Visitor element not found");
-    return;
-  }
+  if (!visitorsEl) return;
 
-  fetch("https://api.countapi.xyz/hit/idcoin-idc/visits")
-    .then(res => res.json())
-    .then(data => {
-      visitorsEl.textContent = data.value.toLocaleString();
-    })
-    .catch(err => {
-      console.error("Visitor counter error:", err);
-      visitorsEl.textContent = "—";
-    });
+  try{
+    const res = await fetch(
+      "https://api.countapi.xyz/get/idcoin-idc/visits",
+      { cache: "no-store" }
+    );
+
+    if(!res.ok) throw new Error("API blocked");
+
+    const data = await res.json();
+    visitorsEl.textContent = (data.value || 0).toLocaleString();
+
+  }catch(err){
+    console.warn("Visitor counter disabled:", err);
+    visitorsEl.textContent = "0";
+  }
 
 });
 
-year.innerText=new Date().getFullYear();
-
-function openFiatLeak(){
-  document.getElementById("fiatModal").style.display = "flex";
-}
-function closeFiatLeak(){
-  document.getElementById("fiatModal").style.display = "none";
-}
 
 /* =================================================
    TICKER — SMART FALLBACK (SunSwap → CoinGecko → Text)
@@ -316,6 +311,7 @@ musicBtn.addEventListener("click", () => {
 
 loadCryptoTicker();
 setInterval(loadCryptoTicker, 30000);
+
 
 
 
