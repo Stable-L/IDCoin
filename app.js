@@ -48,67 +48,92 @@ function closeFiatLeak(){
 }
 
 /* =================================================
-   TICKER TOP CRYPTO — IDC PINNED FIRST
-   Source: CoinGecko + Manual IDC
+   TICKER — SMART FALLBACK (SunSwap → CoinGecko → Text)
 ================================================= */
 async function loadCryptoTicker(){
   const ticker = document.getElementById("tickerContent");
+  ticker.innerHTML = "";
 
+  /* ===== 1️⃣ TRY SUNSWAP (TRONLINK READY) ===== */
+  try{
+    if (window.tronWeb?.ready) {
+
+      const idcPrice = await getPriceFromLP(IDC_LP, IDC_TOKEN, IDC_DEC);
+      const aecPrice = await getPriceFromLP(AEC_LP, AEC_TOKEN, AEC_DEC);
+
+      ticker.innerHTML = `
+        <div class="ticker-item">
+          <img src="assets/logo.png">
+          <span class="ticker-symbol">IDC</span>
+          <span class="ticker-price">$${idcPrice.toFixed(4)}</span>
+          <span style="color:#4caf50;">LIVE</span>
+        </div>
+
+        <div class="ticker-item">
+          <img src="assets/aecoin.png">
+          <span class="ticker-symbol">AEC</span>
+          <span class="ticker-price">$${aecPrice.toFixed(4)}</span>
+          <span style="color:#4caf50;">LIVE</span>
+        </div>
+      `;
+
+      ticker.innerHTML += ticker.innerHTML;
+      return;
+    }
+  } catch(e){
+    console.warn("SunSwap not ready");
+  }
+
+  /* ===== 2️⃣ FALLBACK COINGECKO (NO WALLET NEEDED) ===== */
   try{
     const res = await fetch(
       "https://api.coingecko.com/api/v3/coins/markets" +
-      "?vs_currency=usd&order=market_cap_desc" +
-      "&per_page=100&page=1&sparkline=false"
+      "?vs_currency=usd&order=market_cap_desc&per_page=20&page=1"
     );
-
     const data = await res.json();
-    ticker.innerHTML = "";
-
-    /* ===== IDC MANUAL (PINNED FIRST) ===== */
-    const idcItem = document.createElement("div");
-    idcItem.className = "ticker-item";
-
-    idcItem.innerHTML = `
-      <img src="assets/logo.png" alt="IDC">
-      <span class="ticker-symbol" style="color:#d4af37;">IDC</span>
-      <span class="ticker-price">$1.00</span>
-      <span style="color:#4caf50;">0.00%</span>
-    `;
-
-    ticker.appendChild(idcItem);
-
-    /* ===== COINGECKO DATA ===== */
-    data.forEach(c=>{
-      const item = document.createElement("div");
-      item.className = "ticker-item";
-
-      item.innerHTML = `
-        <img src="${c.image}" alt="${c.symbol}">
-        <span class="ticker-symbol">${c.symbol.toUpperCase()}</span>
-        <span class="ticker-price">$${c.current_price.toLocaleString()}</span>
-        <span style="color:${c.price_change_percentage_24h >= 0 ? '#4caf50' : '#ff5252'}">
-          ${c.price_change_percentage_24h?.toFixed(2)}%
-        </span>
-      `;
-
-      ticker.appendChild(item);
-    });
-
-    /* ===== DUPLIKASI UNTUK LOOP HALUS ===== */
-    ticker.innerHTML += ticker.innerHTML;
-
-  }catch(err){
-    console.error("Ticker error:", err);
 
     ticker.innerHTML = `
       <div class="ticker-item">
-        <img src="assets/logo.png" alt="IDC">
+        <img src="assets/logo.png">
         <span class="ticker-symbol">IDC</span>
         <span class="ticker-price">$1.00</span>
-        <span style="color:#4caf50;">0.00%</span>
+        <span style="color:#4caf50;">PEG</span>
+      </div>
+
+      <div class="ticker-item">
+        <img src="assets/aecoin.png">
+        <span class="ticker-symbol">AEC</span>
+        <span class="ticker-price">$0.27</span>
+        <span style="color:#4caf50;">REF</span>
       </div>
     `;
+
+    data.forEach(c=>{
+      ticker.innerHTML += `
+        <div class="ticker-item">
+          <img src="${c.image}">
+          <span class="ticker-symbol">${c.symbol.toUpperCase()}</span>
+          <span class="ticker-price">$${c.current_price.toLocaleString()}</span>
+        </div>
+      `;
+    });
+
+    ticker.innerHTML += ticker.innerHTML;
+    return;
+
+  } catch(e){
+    console.warn("CoinGecko fallback failed");
   }
+
+  /* ===== 3️⃣ LAST RESORT TEXT ===== */
+  ticker.innerHTML = `
+    <div class="ticker-item">
+      🌍 Global Crypto Market • Stable • Secure • Transparent • Powered by TRON
+    </div>
+    <div class="ticker-item">
+      🌍 Global Crypto Market • Stable • Secure • Transparent • Powered by TRON
+    </div>
+  `;
 }
 
 
@@ -205,6 +230,9 @@ musicBtn.addEventListener("click", () => {
     musicBtn.innerText = "🔇";
   }
 });
+
+loadCryptoTicker();
+setInterval(loadCryptoTicker, 30000);
 
 
 
