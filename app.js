@@ -313,6 +313,28 @@ loadCryptoTicker();
 setInterval(loadCryptoTicker, 30000);
 
 
+/* ================= FIAT LEAK MODAL ================= */
+
+function openFiatLeak(){
+  const modal = document.getElementById("fiatModal");
+  const frame = document.getElementById("fiatFrame");
+
+  // baru load saat diklik
+  frame.src = "https://fiatleak.com/usdt";
+
+  modal.style.display = "flex";
+}
+
+function closeFiatLeak(){
+  const modal = document.getElementById("fiatModal");
+  const frame = document.getElementById("fiatFrame");
+
+  modal.style.display = "none";
+
+  // stop FiatLeak TOTAL (important)
+  frame.src = "";
+}
+
 
 
 
