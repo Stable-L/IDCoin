@@ -17,3 +17,16 @@ DeFi and Web3 integration
 With fixed supply and secure contract design, IDC ensures trust and transparency.
 
 Note: ID Coin is a community-driven crypto asset and not affiliated with any government or central bank.
+
+# Indo Stable Coin (IDC)
+
+## Overview
+Indo Stable Coin (IDC) is a TRC20 token deployed on the TRON blockchain.
+
+## Contract
+Contract Address: TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ
+Explorer: https://tronscan.org/#/token20/TTyhFvHphvhbtWuTCKWPYt1mLTa4NjrRVQ
+
+## Pair
+SunSwap V3 Pair Analytics:
+https://sun.io/?lang=en-US#/scan/pairDetail?pairAddress=TMSsNLyCT9JaUCgkLQJM9AZw4o8NbcZpv5&version=v3
